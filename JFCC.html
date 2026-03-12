@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JFCC – Jolly Fam Contact Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b24;
+      --card: #1c2333;
+      --border: rgba(255,255,255,0.07);
+      --gold: #f0c060;
+      --gold2: #e8a830;
+      --teal: #48cba8;
+      --blue: #58a6ff;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --call: #2ea043;
+      --wa: #25d366;
+      --map: #1a73e8;
+      --radius: 18px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Subtle animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(240,192,96,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(72,203,168,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ───── NAV ───── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(13,17,23,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: #0d1117;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.3px;
+    }
+
+    .nav-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      margin-left: 6px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 7px 18px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold);
+      background: rgba(240,192,96,0.08);
+      border-color: rgba(240,192,96,0.2);
+    }
+
+    /* ───── HERO ───── */
+    #home {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(240,192,96,0.1);
+      border: 1px solid rgba(240,192,96,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 9vw, 96px);
+      font-weight: 700;
+      line-height: 1.0;
+      color: var(--text);
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s ease 0.1s both;
+    }
+
+    .hero-title .accent {
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      animation: fadeUp 0.7s ease 0.2s both;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      animation: fadeUp 0.7s ease 0.3s both;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--gold);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      animation: fadeUp 1s ease 0.8s both;
+    }
+
+    .scroll-dot {
+      width: 20px; height: 32px;
+      border: 1.5px solid var(--muted);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      padding-top: 6px;
+    }
+
+    .scroll-dot::after {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: scrollBob 1.5s ease infinite;
+    }
+
+    /* ───── CONTACTS SECTION ───── */
+    #contacts {
+      position: relative;
+      z-index: 1;
+      padding: 80px 24px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-title .gold { color: var(--gold); }
+
+    /* ───── CONTACT CARD ───── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 20px;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      animation: fadeUp 0.5s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--teal));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+      border-color: rgba(240,192,96,0.25);
+    }
+
+    .contact-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 54px; height: 54px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #0d1117;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(240,192,96,0.25);
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .card-role {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-info {
+      margin-bottom: 22px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .info-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .info-icon.phone { background: rgba(46,160,67,0.15); }
+    .info-icon.addr  { background: rgba(26,115,232,0.15); }
+
+    .info-text {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .info-text a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Address clickable */
+    .addr-link {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .addr-link:hover { color: var(--blue); }
+
+    /* ───── ACTION BUTTONS ───── */
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 11px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .btn-call {
+      background: rgba(46,160,67,0.15);
+      color: #4ade80;
+      border: 1px solid rgba(46,160,67,0.3);
+    }
+    .btn-call:hover {
+      background: rgba(46,160,67,0.28);
+      border-color: rgba(46,160,67,0.6);
+      transform: scale(1.03);
+    }
+
+    .btn-wa {
+      background: rgba(37,211,102,0.12);
+      color: #25d366;
+      border: 1px solid rgba(37,211,102,0.25);
+    }
+    .btn-wa:hover {
+      background: rgba(37,211,102,0.25);
+      border-color: rgba(37,211,102,0.55);
+      transform: scale(1.03);
+    }
+
+    .btn-map {
+      background: rgba(26,115,232,0.12);
+      color: #58a6ff;
+      border: 1px solid rgba(26,115,232,0.25);
+    }
+    .btn-map:hover {
+      background: rgba(26,115,232,0.25);
+      border-color: rgba(26,115,232,0.55);
+      transform: scale(1.03);
+    }
+
+    /* ───── DEVELOPER FOOTER CARD ───── */
+    .dev-section {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+
+    .dev-card {
+      background: linear-gradient(135deg, #1c2333 0%, #161b24 100%);
+      border: 1px solid rgba(240,192,96,0.2);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dev-card::after {
+      content: '</>';
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 100px;
+      font-weight: 700;
+      color: rgba(240,192,96,0.05);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .dev-avatar {
+      width: 72px; height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 20px rgba(72,203,168,0.3);
+    }
+
+    .dev-info { flex: 1; }
+
+    .dev-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(72,203,168,0.12);
+      border: 1px solid rgba(72,203,168,0.3);
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .dev-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .dev-title {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .dev-title strong {
+      color: var(--gold);
+    }
+
+    .dev-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 22px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0d1117;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .dev-cta:hover {
+      transform: scale(1.04);
+      box-shadow: 0 6px 24px rgba(240,192,96,0.35);
+    }
+
+    /* ───── FOOTER ───── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer span { color: var(--gold); }
+
+    /* ───── ANIMATIONS ───── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollBob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(8px); }
+    }
+
+    /* stagger cards */
+    .contact-card:nth-child(1) { animation-delay: 0.1s; }
+    .contact-card:nth-child(2) { animation-delay: 0.18s; }
+    .contact-card:nth-child(3) { animation-delay: 0.26s; }
+    .contact-card:nth-child(4) { animation-delay: 0.34s; }
+    .contact-card:nth-child(5) { animation-delay: 0.42s; }
+    .contact-card:nth-child(6) { animation-delay: 0.50s; }
+    .contact-card:nth-child(7) { animation-delay: 0.58s; }
+
+    /* ───── MOBILE ───── */
+    @media (max-width: 600px) {
+      nav { padding: 0 18px; }
+      .nav-title span { display: none; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .dev-card { padding: 28px 22px; }
+      .dev-card::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">JF</div>
+    <div class="nav-title">JFCC <span>Jolly Fam Contact Card</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#home" class="active" onclick="setActive(this)">Home</a>
+    <a href="#contacts" onclick="setActive(this)">Contacts</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-eyebrow">🏡 Our Family Hub</div>
+  <h1 class="hero-title"><span class="accent">Jolly Fam</span><br>Contact Card</h1>
+  <p class="hero-subtitle">One tap to call, message, or get directions home. Always connected, wherever you are.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Family Members</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">Homes</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Love</span></div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-dot"></div>
+    <span>Scroll to contacts</span>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts">
+  <div class="section-header">
+    <div class="section-tag">📞 Family Directory</div>
+    <h2 class="section-title">Our <span class="gold">People</span></h2>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- Jolly -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">J</div>
+        <div>
+          <div class="card-name">Jolly</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+13473361241">+1 (347) 336-1241</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">
+            425 Gansevoort Blvd, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+13473361241">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/13473361241" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Reju -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">R</div>
+        <div>
+          <div class="card-name">Reju</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+13477928550">+1 (347) 792-8550</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">
+            425 Gansevoort Blvd, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+13477928550">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/13477928550" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Mereena -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">M</div>
+        <div>
+          <div class="card-name">Mereena</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+13473579579">+1 (347) 357-9579</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">
+            425 Gansevoort Blvd, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+13473579579">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/13473579579" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Christina -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">C</div>
+        <div>
+          <div class="card-name">Christina</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+17183013040">+1 (718) 301-3040</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">
+            425 Gansevoort Blvd, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+17183013040">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/17183013040" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Rony -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">R</div>
+        <div>
+          <div class="card-name">Rony</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+13473646424">+1 (347) 364-6424</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">
+            425 Gansevoort Blvd, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+13473646424">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/13473646424" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('425 Gansevoort Boulevard, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Roseana -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">R</div>
+        <div>
+          <div class="card-name">Roseana</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+13473586518">+1 (347) 358-6518</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('36 Bascom Place, Staten Island, NY')">
+            36 Bascom Place, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+13473586518">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/13473586518" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('36 Bascom Place, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+    <!-- Sherin -->
+    <div class="contact-card">
+      <div class="card-top">
+        <div class="avatar">S</div>
+        <div>
+          <div class="card-name">Sherin</div>
+          <div class="card-role">Family Member</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="info-row">
+          <div class="info-icon phone">📱</div>
+          <div class="info-text"><a href="tel:+16463265611">+1 (646) 326-5611</a></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon addr">📍</div>
+          <div class="info-text addr-link" onclick="openMap('36 Bascom Place, Staten Island, NY')">
+            36 Bascom Place, Staten Island
+          </div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <a class="btn btn-call" href="tel:+16463265611">📞 Call</a>
+        <a class="btn btn-wa" href="https://wa.me/16463265611" target="_blank">💬 WhatsApp</a>
+        <button class="btn btn-map" onclick="openMap('36 Bascom Place, Staten Island, NY')">🗺 Directions</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DEVELOPER CARD -->
+<section class="dev-section">
+  <div class="dev-card">
+    <div class="dev-avatar">SS</div>
+    <div class="dev-info">
+      <div class="dev-badge">🟢 Open to Work</div>
+      <div class="dev-name">Sherin Sabu</div>
+      <div class="dev-title">
+        <strong>Software Developer</strong> — Passionate about building clean, purposeful digital experiences.<br>
+        Available for full-time roles, freelance projects, and collaborations. Let's build something great together.
+      </div>
+      <a class="dev-cta" href="mailto:sherin@example.com">✉️ Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Built with ❤️ for the <span>Jolly Family</span> · JFCC © 2025 · Crafted by Sherin Sabu
+</footer>
+
+<script>
+  function openMap(address) {
+    const encoded = encodeURIComponent(address);
+    window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded, '_blank');
+  }
+
+  function setActive(el) {
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Highlight active nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
